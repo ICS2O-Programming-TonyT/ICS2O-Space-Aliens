@@ -22,8 +22,8 @@ class GameScene extends Phaser.Scene {
   constructor () {
     super({ key: 'gameScene' })
 
-    this.ship = null
-    this.fireMissile = false
+    this.Grim = null
+    this.fireScythe = false
     this.score = 0
     this.scoreText = null
     this.scoreTextStyle = { font: '65px Arial', fill: '#ffffff', align: 'center' }
@@ -41,8 +41,8 @@ class GameScene extends Phaser.Scene {
 
     // images
     this.load.image('starBackground', 'assets/starBackground.png')
-    this.load.image('ship', 'assets/spaceShip.png')
-    this.load.image('missile', 'assets/missile.png')
+    this.load.image('Grim', 'assets/Grim Reaper.png')
+    this.load.image('Scythe', 'assets/Scythe.png')
     this.load.image('alien', 'assets/alien.png')
     // sound
     this.load.audio('laser', 'assets/laser1.wav')
@@ -56,19 +56,19 @@ class GameScene extends Phaser.Scene {
 
     this.scoreText = this.add.text(10, 10, 'Score: ' + this.score.toString(), this.scoreTextStyle)
 
-    this.ship = this.physics.add.sprite(1920 / 2, 1080 - 100, 'ship')
+    this.Grim = this.physics.add.sprite(1920 / 2, 1080 - 100, 'Grim')
 
-    // create a group for the missiles
-    this.missileGroup = this.physics.add.group()
+    // create a group for the Scythes
+    this.ScytheGroup = this.physics.add.group()
 
     // create a group for the aliens
     this.alienGroup = this.add.group()
     this.createAlien()
 
-    // Collisions between missiles and aliens
-    this.physics.add.collider(this.missileGroup, this.alienGroup, function (missileCollide, alienCollide) {
+    // Collisions between Scythes and aliens
+    this.physics.add.collider(this.ScytheGroup, this.alienGroup, function (ScytheCollide, alienCollide) {
       alienCollide.destroy()
-      missileCollide.destroy()
+      ScytheCollide.destroy()
       this.sound.play('explosion')
       this.score = this.score + 1
       this.scoreText.setText('Score: ' + this.score.toString())
@@ -76,12 +76,12 @@ class GameScene extends Phaser.Scene {
       this.createAlien()
     }.bind(this))
 
-    // Collisions between ship and aliens
-    this.physics.add.collider(this.ship, this.alienGroup, function (shipCollide, alienCollide) {
+    // Collisions between Grim and aliens
+    this.physics.add.collider(this.Grim, this.alienGroup, function (GrimCollide, alienCollide) {
       this.sound.play('bomb')
       this.physics.pause()
       alienCollide.destroy()
-      shipCollide.destroy()
+      GrimCollide.destroy()
       this.gameOverText = this.add.text(1920 / 2, 1080 / 2, 'Game Over!\nClick to play again.', this.gameOverTextStyle).setOrigin(0.5)
       this.gameOverText.setInteractive({ useHandCursor: true })
       this.gameOverText.on('pointerdown', () => this.scene.start('gameScene'))
@@ -95,33 +95,33 @@ class GameScene extends Phaser.Scene {
     const keySpaceObj = this.input.keyboard.addKey('SPACE')
 
     if (keyLeftObj.isDown === true) {
-      this.ship.x -= 15
-      if (this.ship.x < 0) {
-        this.ship.x = 0
+      this.Grim.x -= 15
+      if (this.Grim.x < 0) {
+        this.Grim.x = 0
       }
     }
 
     if (keyRightObj.isDown === true) {
-      this.ship.x += 15
-      if (this.ship.x > 1920) {
-        this.ship.x = 1920
+      this.Grim.x += 15
+      if (this.Grim.x > 1920) {
+        this.Grim.x = 1920
       }
     }
     if (keySpaceObj.isDown === true) {
-      if (this.fireMissile === false) {
-        // fire missile
-        this.fireMissile = true
-        const aNewMissile = this.physics.add.sprite(this.ship.x, this.ship.y, 'missile')
-        this.missileGroup.add(aNewMissile)
+      if (this.fireScythe === false) {
+        // fire Scythe
+        this.fireScythe = true
+        const aNewScythe = this.physics.add.sprite(this.Grim.x, this.Grim.y, 'Scythe')
+        this.ScytheGroup.add(aNewScythe)
         this.sound.play('laser')
       }
     }
   
     if (keySpaceObj.isUp === true) {
-      this.fireMissile = false
+      this.fireScythe = false
     }
 
-    this.missileGroup.children.each(function (item) {
+    this.ScytheGroup.children.each(function (item) {
       item.y = item.y - 15
       if (item.y < 50) {
         item.destroy()
