@@ -6,12 +6,12 @@
 // Created on: Sep 2020
 // This is the Menu Scene
 
-class MenuScene extends Phaser.Scene {
+class InstructionScene extends Phaser.Scene {
   constructor () {
-    super({ key: 'menuScene' })
+    super({ key: 'instructionScene' })
 
     this.menuSceneBackgroundImage = null
-    this.startButton = null
+    this.Instruction = null
   }
 
   init (data) {
@@ -19,10 +19,10 @@ class MenuScene extends Phaser.Scene {
   }
 
   preload () {
-    console.log('Menu Scene')
+    console.log('Instruction Scene')
 
     this.load.image('menuSceneBackground', 'assets/graveyard_screen_image2.png')
-    this.load.image('startButton', 'assets/start.png')
+    this.load.image('Instruction', 'assets/Instruction.png')
   }
 
   create (data) {
@@ -30,17 +30,17 @@ class MenuScene extends Phaser.Scene {
     this.menuSceneBackgroundImage.x = 1920 / 2
     this.menuSceneBackgroundImage.y = 1080 / 2
 
-    this.startButton = this.add.sprite(1920 / 2, (1080 / 2) + 100, 'startButton')
-    this.startButton.setInteractive({ useHandCursor: true })
-    this.startButton.on('pointerdown', () => this.clickButton())
+    this.Instruction = this.add.sprite(1920 / 2, (1080 / 2) + 100, 'Instruction')
+    this.Instruction.setInteractive({ useHandCursor: true })
+    this.Instruction.on('pointerdown', () => this.clickButton())
   }
 
   update (time, delta) {
   }
 
   clickButton () {
-    this.scene.start('instructionScene')
+    this.scene.start('gameScene')
   }
 }
 
-export default MenuScene
+export default InstructionScene
