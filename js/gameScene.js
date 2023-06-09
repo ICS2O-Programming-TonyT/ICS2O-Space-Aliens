@@ -113,8 +113,8 @@ class GameScene extends Phaser.Scene {
     this.summonghost()
 
     // Collisions between Scythes and aliens
-    this.physics.add.collider(this.ScytheGroup, this.soulgroup, function (ScytheCollide, alienCollide) {
-      alienCollide.destroy()
+    this.physics.add.collider(this.ScytheGroup, this.soulgroup, function (ScytheCollide, soulCollide) {
+      soulCollide.destroy()
       ScytheCollide.destroy()
       this.sound.play('explosion')
       this.score = this.score + 1
@@ -123,8 +123,8 @@ class GameScene extends Phaser.Scene {
       this.summonghost()
     }.bind(this))
 
-    this.physics.add.collider(this.ScytheGroup, this.ghostgroup, function (ScytheCollide, alienCollide) {
-      alienCollide.destroy()
+    this.physics.add.collider(this.ScytheGroup, this.ghostgroup, function (ScytheCollide, ghostCollide) {
+      ghostCollide.destroy()
       ScytheCollide.destroy()
       this.sound.play('explosion')
       this.score = this.score + 3

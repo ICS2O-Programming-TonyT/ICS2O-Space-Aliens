@@ -12,6 +12,7 @@ class MenuScene extends Phaser.Scene {
 
     this.menuSceneBackgroundImage = null
     this.startButton = null
+    this.instructionButton = null
   }
 
   init (data) {
@@ -23,6 +24,7 @@ class MenuScene extends Phaser.Scene {
 
     this.load.image('menuSceneBackground', 'assets/graveyard_screen_image2.png')
     this.load.image('startButton', 'assets/start.png')
+    this.load.image('instructionButton', 'assets/instructionbutton.png')
   }
 
   create (data) {
@@ -31,15 +33,23 @@ class MenuScene extends Phaser.Scene {
     this.menuSceneBackgroundImage.y = 1080 / 2
 
     this.startButton = this.add.sprite(1920 / 2, (1080 / 2) + 100, 'startButton')
+    this.instructionButton = this.add.sprite(1920 / 2, (700) + 100, 'instructionButton')
     this.startButton.setInteractive({ useHandCursor: true })
-    this.startButton.on('pointerdown', () => this.clickButton())
+    this.instructionButton.setInteractive({ useHandCursor: true })
+    this.startButton.on('pointerdown', () => this.clickButton('start'))
+    this.instructionButton.on('pointerdown', () => this.clickButton('instruction'))
   }
 
   update (time, delta) {
   }
 
-  clickButton () {
-    this.scene.start('instructionScene')
+  clickButton (value) {
+    if (value == 'start') {
+      this.scene.start('gameScene')
+    } else if (value == 'instruction') {
+      this.scene.start('instructionScene')
+    }
+    
   }
 }
 

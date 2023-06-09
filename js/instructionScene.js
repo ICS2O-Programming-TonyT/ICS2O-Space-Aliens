@@ -39,7 +39,7 @@ class InstructionScene extends Phaser.Scene {
   }
 
   clickButton () {
-    this.scene.start('gameScene')
+    this.scene.start('menuScene')
   }
 }
 
