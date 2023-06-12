@@ -1,44 +1,45 @@
 /* global Phaser */
 
-// Copyright (c) 2020 Mr. Coxall All rights reserved
-//
-// Created by: Mr. Coxall
-// Created on: Sep 2020
 // This is the Menu Scene
 
 class InstructionScene extends Phaser.Scene {
-  constructor () {
+  constructor() {
     super({ key: 'instructionScene' })
 
     this.menuSceneBackgroundImage = null
-    this.Instruction = null
+    this.instructionImage = null
   }
 
-  init (data) {
+  init(data) {
     this.cameras.main.setBackgroundColor('#ffffff')
   }
 
-  preload () {
+  preload() {
     console.log('Instruction Scene')
 
+    // Preload the menu scene background image
     this.load.image('menuSceneBackground', 'assets/graveyard_screen_image2.png')
-    this.load.image('Instruction', 'assets/Instruction.png')
+
+    // Preload the instruction image
+    this.load.image('instructionImage', 'assets/Instruction.png')
   }
 
-  create (data) {
+  create(data) {
     this.menuSceneBackgroundImage = this.add.sprite(0, 0, 'menuSceneBackground')
     this.menuSceneBackgroundImage.x = 1920 / 2
     this.menuSceneBackgroundImage.y = 1080 / 2
 
-    this.Instruction = this.add.sprite(1920 / 2, (1080 / 2) + 100, 'Instruction')
-    this.Instruction.setInteractive({ useHandCursor: true })
-    this.Instruction.on('pointerdown', () => this.clickButton())
+    this.instructionImage = this.add.sprite(1920 / 2, (1080 / 2) + 100, 'instructionImage')
+    this.instructionImage.setInteractive({ useHandCursor: true })
+    this.instructionImage.on('pointerdown', () => this.clickButton())
   }
 
-  update (time, delta) {
+  update(time, delta) {
+    // Update logic goes here
   }
 
-  clickButton () {
+  clickButton() {
+    // Start the menu scene when the instruction image is clicked
     this.scene.start('menuScene')
   }
 }
