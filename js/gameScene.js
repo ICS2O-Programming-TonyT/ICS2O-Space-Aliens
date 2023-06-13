@@ -110,20 +110,21 @@ class GameScene extends Phaser.Scene {
   create (data) {
     this.background = this.add.image(0, 0, 'Graveyard').setScale(2.0);
     this.background.setOrigin(0, 0);
-
     this.scoreText = this.add.text(10, 10, 'Score: ' + this.score.toString(), this.scoreTextStyle);
     this.highscoreText = this.add.text(10, 100, 'High Score: ' + this.highscore.toString(), this.highcoreTextStyle);
-
     this.Grim = this.physics.add.sprite(1920 / 2, 1080 - 100, 'Grim');
-
+    this.soulgroup = this.add.group()
+    this.ghostgroup = this.add.group()
+    this.ScytheGroup = this.add.group()
+    this.summonsouls();
+    this.summonghost();
     
     // Collisions between Grim and souls
-    this.physics.add.collider(this.Grim, this.soulgroup, function (GrimCollide, soulCollide) {
+    this.physics.add.collider(this.Grim, this.soulgroup || this.ghostgroup, function (GrimCollide, soulCollide) {
       this.sound.play('bomb');
       this.physics.pause();
       soulCollide.destroy();
       GrimCollide.destroy();
-      
       if (this.highscore <= this.score) {
         this.gameOverText = this.add.text(1920 / 2, 1080 / 2, `!New Highscore!\n${this.score.toString()}\nGame Over!\nClick to play again.`, this.gameOverTextStyle).setOrigin(0.5);
         this.highscore = this.score;
@@ -144,6 +145,25 @@ class GameScene extends Phaser.Scene {
     const keyAobj = this.input.keyboard.addKey('A');
     const keyDobj = this.input.keyboard.addKey('D');
 
+    this.physics.add.collider(this.ScytheGroup, this.soulgroup, function (ScytheCollide, soulCollide) {
+      soulCollide.destroy()
+      ScytheCollide.destroy()
+      this.sound.play('explosion')
+      this.score += 1
+      this.scoreText.setText('Score: ' + this.score.toString())
+      this.createSoul();
+      this.createGhost();
+    }, null, this);
+
+    this.physics.add.collider(this.ScytheGroup, this.ghostgroup, function (ScytheCollide, ghostCollide) {
+      ghostCollide.destroy()
+      ScytheCollide.destroy()
+      this.sound.play('explosion')
+      this.score += 3
+      this.scoreText.setText('Score: ' + this.score.toString())
+      this.createSoul();
+      this.createGhost();
+    }, null, this)
     
     if (keyLeftObj.isDown === true || keyAobj.isDown === true) {
       this.Grim.x -= 15;
@@ -172,12 +192,12 @@ class GameScene extends Phaser.Scene {
       this.fireScythe = false;
     }
 
-    this.ScytheGroup.children.each(function (item) {
-      item.y = item.y - 15;
-      if (item.y < 50) {
-        item.destroy();
-      }
-    });
+  this.ScytheGroup.children.each(function (item) {
+    item.y = item.y - 15;
+    if (item.y < 50) {
+      item.destroy();
+    }
+  });
     
   this.soulgroup.children.each(function (item) {
     if (item.y > 1080) {
@@ -187,11 +207,11 @@ class GameScene extends Phaser.Scene {
     }
   }, this);
     
-    this.ghostgroup.children.each(function (item) {
-      if (item.y > 1080) {
-        item.destroy();
-        this.createSoul();
-        this.createGhost();
+  this.ghostgroup.children.each(function (item) {
+    if (item.y > 1080) {
+      item.destroy();
+      this.createSoul();
+      this.createGhost();
       }
     }, this);
   }
